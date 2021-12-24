@@ -1,0 +1,23 @@
+﻿Create new account with identityNumber: 402826408 , email: hothayfa, name: hothayfa, age: 23, balance: 1555, AccountType: current, onDate: 12/16/2021 03:32 PM
+Update the account that has identitynumber: 402826408,email: hothifa19982018@gmail.com, name: hothayfa abuarra, age:23, balance:1555, AccountType: saving, onDate:12/16/2021 03:33 PM
+Inactive the account that has identitynumber: 402826408,email: hothifa19982018@gmail.com, name: hothayfa abuarra, age:23, balance:1555, AccountType: saving, onDate:12/16/2021 03:33 PM 
+Deposit to the account that has identitynumber: 402826408,email: hothifa19982018@gmail.com, name: hothayfa abuarra, age:23, balance:1755, AccountType: saving, onDate:12/16/2021 03:33 PM
+Withdraw from the account that has identitynumber: 402826408,email: hothifa19982018@gmail.com, name: hothayfa abuarra, age:23, balance:1655, AccountType: saving, onDate:12/16/2021 03:33 PM, Previous Balance is: 1755
+Deposit to the account that has identitynumber: 402826408,email: hothifa19982018@gmail.com, name: hothayfa abuarra, age:23, balance:1988, AccountType: saving, onDate:12/16/2021 03:33 PM
+Deposit to the account that has identitynumber: 402826408,email: hothifa19982018@gmail.com, name: hothayfa abuarra, age:23, balance:3988, AccountType: saving, onDate:12/16/2021 03:33 PM
+Withdraw from the account that has identitynumber: 402826408,email: hothifa19982018@gmail.com, name: hothayfa abuarra, age:23, balance:3888, AccountType: saving, onDate:12/16/2021 03:33 PM, Previous Balance is: 3988
+Create new account with identityNumber: 853540177 , email: omar, name: omar, age: 29, balance: 1000, AccountType: current, onDate: 12/16/2021 04:01 PM
+Update the account that has identitynumber: 853540177,email: omar@gmail.com, name: omar abuarra, age:29, balance:10000, AccountType: current, onDate:12/16/2021 04:02 PM
+Inactive the account that has identitynumber: 853540177,email: omar@gmail.com, name: omar abuarra, age:29, balance:10000, AccountType: current, onDate:12/16/2021 04:02 PM 
+Deposit to the account that has identitynumber: 853540177,email: omar@gmail.com, name: omar abuarra, age:29, balance:10001, AccountType: current, onDate:12/16/2021 04:02 PM
+Withdraw from the account that has identitynumber: 853540177,email: omar@gmail.com, name: omar abuarra, age:29, balance:501, AccountType: current, onDate:12/16/2021 04:02 PM, Previous Balance is: 10001
+Deposit to the account that has identitynumber: 853540177,email: omar@gmail.com, name: omar abuarra, age:29, balance:502, AccountType: current, onDate:12/16/2021 04:02 PM
+Create new account with identityNumber: 123456654 , email: ss, name: ss, age: 55, balance: 551, AccountType: current, onDate: 12/19/2021 04:02 PM
+Create new account with identityNumber: 123456789 , email: s, name: s, age: 55, balance: 55, AccountType: saving, onDate: 12/20/2021 03:43 PM
+Create new account with identityNumber: 123456789 , email: ss, name: ss, age: 55, balance: 55, AccountType: current, onDate: 12/20/2021 03:48 PM
+Create new account with identityNumber: 987654321 , email: ss, name: ss, age: 55, balance: 55, AccountType: current, onDate: 12/20/2021 03:49 PM
+Update the account that has identitynumber: 987654321,email: asd2@g.com, name: s, age:55, balance:1, AccountType: saving, onDate:12/20/2021 04:09 PM
+Withdraw from the account that has identitynumber: 853540177,email: omar@gmail.com, name: omar abuarra, age:29, balance:1, AccountType: current, onDate:12/16/2021 04:02 PM, Previous Balance is: 501
+Create new account with identityNumber: 594256046 , email: ss, name: ss, age: 55, balance: 66, AccountType: current, onDate: 12/22/2021 03:12 PM
+Create new account with identityNumber: 321456987 , email: ss, name: ss, age: 55, balance: 55, AccountType: current, onDate: 12/22/2021 03:14 PM
+Create new account with identityNumber: 654789123 , email: ss, name: ss, age: 55, balance: 55, AccountType: current, onDate: 12/23/2021 09:46 AM
