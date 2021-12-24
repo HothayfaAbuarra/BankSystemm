@@ -6,6 +6,7 @@ namespace BankSystem
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("HelloWorld");
             Program start = new Program();
             bool Exit = false;
             while (Exit == false)
