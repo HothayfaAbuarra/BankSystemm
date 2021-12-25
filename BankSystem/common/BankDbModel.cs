@@ -22,9 +22,9 @@ namespace BankSystem.common
     {
         [Key]
         public int BankAccount_id { get; set; }
-        [ForeignKey("Customer_id")]
         public int Customer_id { get; set; }
         public string Account_type { get; set; }
+        public string Account_Date { get; set; }
         public bool Account_Status { get; set; }
     }
     public class Balances
@@ -32,7 +32,6 @@ namespace BankSystem.common
         [Key]
         public int Balance_id { get; set; }
         public double balance { get; set; }
-        [ForeignKey("BankAccount_id")]
         public int Account_id { get; set; }
     }
     public class Employees
@@ -41,7 +40,6 @@ namespace BankSystem.common
         public int Employee_id { get; set; }
         [ForeignKey("Department_id")]
         public int Department_id { get; set; }
-        [ForeignKey("Role_id")]
         public int Role_id { get; set; }
         public string Employee_username { get; set; }
         public string Employee_password { get; set; }
