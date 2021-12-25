@@ -23,7 +23,8 @@ namespace BankSystem.Migrations
                 {
                     table.PrimaryKey("PK_Customers", x => x.Customer_id);
                 });
-            migrationBuilder.CreateTable(
+
+                migrationBuilder.CreateTable(
                 name: "BankAccounts",
                 columns: table => new
                 {
@@ -36,13 +37,9 @@ namespace BankSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BankAccounts", x => x.BankAccount_id);
-                    table.ForeignKey(
-                        name: "FK_BankAccounts_Customers",
-                        column: x => x.Customer_id,
-                        principalTable: "Customers",
-                        principalColumn: "Customer_id",
-                        onDelete: ReferentialAction.Cascade);
+                    
                 });
+
             migrationBuilder.CreateTable(
                 name: "Balances",
                 columns: table => new
