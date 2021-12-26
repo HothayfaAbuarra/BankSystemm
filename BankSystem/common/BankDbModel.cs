@@ -7,26 +7,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankSystem.common
 {
+    public class BankAccounts
+    {
+        [Key]
+        public int BankAccount_id { get; set; }
+        [ForeignKey("FK_Customer_id")]
+        public string CustomersCustomer_id { get; set; }
+        public string Account_type { get; set; }
+        public string Account_Date { get; set; }
+        public bool Account_Status { get; set; }
+    }
     public class Customers
     {
         [Key]
-        public int Customer_id { get; set; }
+        public string Customer_id { get; set; }
         public string Customer_name { get; set; }
         public string Customer_email { get; set; }
         public int Customer_identity { get; set; }
         public int Customer_age { get; set; }
         public int Customer_phone { get; set; }
         public bool Customer_status { get; set; }
+        public List<BankAccounts> BankAccounts { get; set; }
+
     }
-    public class BankAccounts
-    {
-        [Key]
-        public int BankAccount_id { get; set; }
-        public int Customer_id { get; set; }
-        public string Account_type { get; set; }
-        public string Account_Date { get; set; }
-        public bool Account_Status { get; set; }
-    }
+
     public class Balances
     {
         [Key]

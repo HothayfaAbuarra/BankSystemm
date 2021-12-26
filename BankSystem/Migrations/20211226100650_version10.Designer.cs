@@ -3,14 +3,16 @@ using BankSystem.common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BankSystem.Migrations
 {
     [DbContext(typeof(BankdbContext))]
-    partial class BankdbContextModelSnapshot : ModelSnapshot
+    [Migration("20211226100650_version10")]
+    partial class version10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,6 +52,9 @@ namespace BankSystem.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Account_type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Customer_id")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomersCustomer_id")

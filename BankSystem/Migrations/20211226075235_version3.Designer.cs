@@ -3,14 +3,16 @@ using BankSystem.common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BankSystem.Migrations
 {
     [DbContext(typeof(BankdbContext))]
-    partial class BankdbContextModelSnapshot : ModelSnapshot
+    [Migration("20211226075235_version3")]
+    partial class version3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,20 +54,17 @@ namespace BankSystem.Migrations
                     b.Property<string>("Account_type")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CustomersCustomer_id")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("BankAccount_id");
-
-                    b.HasIndex("CustomersCustomer_id");
 
                     b.ToTable("BankAccounts");
                 });
 
             modelBuilder.Entity("BankSystem.common.Customers", b =>
                 {
-                    b.Property<string>("Customer_id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("cuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Customer_age")
                         .HasColumnType("int");
@@ -85,7 +84,7 @@ namespace BankSystem.Migrations
                     b.Property<bool>("Customer_status")
                         .HasColumnType("bit");
 
-                    b.HasKey("Customer_id");
+                    b.HasKey("cuid");
 
                     b.ToTable("Customers");
                 });
@@ -145,18 +144,6 @@ namespace BankSystem.Migrations
                     b.HasKey("Role_id");
 
                     b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("BankSystem.common.BankAccounts", b =>
-                {
-                    b.HasOne("BankSystem.common.Customers", null)
-                        .WithMany("BankAccounts")
-                        .HasForeignKey("CustomersCustomer_id");
-                });
-
-            modelBuilder.Entity("BankSystem.common.Customers", b =>
-                {
-                    b.Navigation("BankAccounts");
                 });
 #pragma warning restore 612, 618
         }

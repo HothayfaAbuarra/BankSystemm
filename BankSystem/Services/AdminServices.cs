@@ -365,7 +365,7 @@ namespace BankSystem
         #endregion
 
         #region Delete Account Method
-        public void DeleteAccount()
+        public async void DeleteAccount()
         {
             Console.WriteLine("Please Enter the identity number for the account that you want to delete:");
             var iden_num = Console.ReadLine();
@@ -376,7 +376,7 @@ namespace BankSystem
                 if (valid_iden_num == true)
                 {
                     AdminRepositrory bankrepo = AdminRepositrory.GetInstance();
-                    if (bankrepo.DeleteAccount(Convert.ToInt32(iden_num))==true)
+                    if (await bankrepo.DeleteAccount(Convert.ToInt32(iden_num))==true)
                     {
                         Console.WriteLine("Account set to Inactive succsfully");
                     }

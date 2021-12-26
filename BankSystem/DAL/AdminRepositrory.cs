@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using System.Text.Json;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BankSystem
 {
@@ -25,24 +27,74 @@ namespace BankSystem
             }
             return bankrepo;
         }
+        #region GetAllBankAccounts Method
+        public List<BankSystem.common.Customers> Getdata()
+        {
+            using (var db = new BankSystem.common.BankdbContext())
+            {
+                var Customers = db.Customers.Select(s=>s).ToList();
+                return Customers;
+            }
+        }
+        #endregion
+
         #region Create Account Method
         /*
          Input:IdentityNumber, email,name,age,balance,type
          output:if sucess returned true,the unique key for the newly created account and if failed returned false
          */
         public Guid CreateAccount(int identitynumber,string email,string name,int age,double balance,string type,int phone)
-        { 
-            string conn = "Data Source=SD-PC-W10-AABUA;Integrated Security=True";
-            SqlConnection sql = new SqlConnection(conn);
-            Guid g = Guid.NewGuid();                   
-            string query = $"INSERT INTO BankSystem.dbo.Customer (Customer_id,Customer_age,Customer_phonenumber,Customer_identity,Customer_status,Customer_email) VALUES ({1},{age},{phone},{identitynumber},{1},{@email.ToString()}) ";
-            Console.WriteLine(query);
+        {                 
             try
             {
-                sql.Open();
-                SqlCommand command = new SqlCommand(query, sql);
-                command.ExecuteNonQuery();
-                Console.WriteLine("Records Inserted Successfully");
+                Guid g = Guid.NewGuid();
+                var result = Getdata();
+                foreach (BankSystem.common.Customers customer in result)
+                {
+                    if (customer.Customer_identity==identitynumber)
+                    {
+                        return new Guid();
+                    }
+                }
+                //Create Customer object
+                BankSystem.common.Customers Customer = new BankSystem.common.Customers();
+                Customer.Customer_id =g.ToString();
+                Customer.Customer_identity = identitynumber;
+                Customer.Customer_email = email;
+                Customer.Customer_age = age;
+                Customer.Customer_name = name;
+                Customer.Customer_phone = phone;
+                Customer.Customer_status = true;
+                //end of create Customer object
+                using (var db = new BankSystem.common.BankdbContext())
+                {
+                    db.Customers.Add(Customer);
+                    db.SaveChanges();
+                }
+
+                //Create BankAccount object
+                DateTime localDate = DateTime.Now;
+                BankSystem.common.BankAccounts Account = new BankSystem.common.BankAccounts();
+                Account.CustomersCustomer_id = Customer.Customer_id;
+                Account.Account_type = type;
+                Account.Account_Status = true;
+                Account.Account_Date = localDate.ToString();
+                //End of Create BankAccount object
+                
+                using (var db = new BankSystem.common.BankdbContext())
+                {
+                    var a= db.BankAccounts.Add(Account);
+                    db.SaveChanges();
+                    BankSystem.common.Balances Balance = new BankSystem.common.Balances();
+                    Balance.Account_id = a.Entity.BankAccount_id;
+                    Balance.balance = balance;
+                    using (var Db = new BankSystem.common.BankdbContext())
+                    {
+                        Db.Balances.Add(Balance);
+                        Db.SaveChanges();
+                    }
+
+                }
                 /*
                 Guid g = Guid.NewGuid();
                 string path = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\memory.json";
@@ -69,6 +121,8 @@ namespace BankSystem
             catch (Exception e)
             {
                 Console.WriteLine(e.Message.ToString());
+                Console.WriteLine(e.InnerException.ToString());
+
                 return new Guid();
                 
             }
@@ -121,38 +175,56 @@ namespace BankSystem
          Input:IdentityNumber
          output:if sucess returned true and if failed returned false
          */
-        public bool DeleteAccount(int identity_num)
+        public async Task<bool> DeleteAccount(int identity_num)
         {
             try
             {
-                int i = 0;
-                string path = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\memory.json";
-                string auditFilePath = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\AuditFile.txt";
-                string prevData = File.ReadAllText(path);
-                var list = JsonConvert.DeserializeObject<List<Account>>(prevData);
-                foreach (Account acc in list)
+                using (var Db = new BankSystem.common.BankdbContext())
                 {
-                    if (acc.identitynumber==identity_num)
+                    var query=(from cust in Db.Customers
+                               from acc in Db.BankAccounts
+                               where cust.Customer_identity==identity_num && acc.CustomersCustomer_id==cust.Customer_id
+                               select new { cust , acc}).FirstOrDefault();
+                    if (query != null)
                     {
-                        list[i].active = false;
-                        Console.WriteLine("Are you sure that you want to InActive this account?Yes/No");
-                        string confirm=Console.ReadLine();
-                        if (confirm.ToLower() == "yes")
-                        {
-                            File.WriteAllText(path, JsonConvert.SerializeObject(list));
-                            File.AppendAllText(auditFilePath, $"Inactive the account that has identitynumber: {list[i].identitynumber}," +
-                                                          $"email: {list[i].email}, name: {list[i].name}, age:{list[i].age}," +
-                                                          $" balance:{list[i].balance}, AccountType: {list[i].type}, onDate:{list[i].date} " +  Environment.NewLine);
-                            return true;
-                        }
-                        if (confirm.ToLower() == "no")
-                        {
-                            return false;
-                        }
+                        query.cust.Customer_status = false;
+                        query.acc.Account_Status = false;
+                        await Db.SaveChangesAsync();
+                        return true;
                     }
-                    i += 1;
+                    else
+                    {
+                        return false;
+                    }
                 }
-                return false;
+                /* int i = 0;
+                 string path = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\memory.json";
+                 string auditFilePath = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\AuditFile.txt";
+                 string prevData = File.ReadAllText(path);
+                 var list = JsonConvert.DeserializeObject<List<Account>>(prevData);
+                 foreach (Account acc in list)
+                 {
+                     if (acc.identitynumber==identity_num)
+                     {
+                         list[i].active = false;
+                         Console.WriteLine("Are you sure that you want to InActive this account?Yes/No");
+                         string confirm=Console.ReadLine();
+                         if (confirm.ToLower() == "yes")
+                         {
+                             File.WriteAllText(path, JsonConvert.SerializeObject(list));
+                             File.AppendAllText(auditFilePath, $"Inactive the account that has identitynumber: {list[i].identitynumber}," +
+                                                           $"email: {list[i].email}, name: {list[i].name}, age:{list[i].age}," +
+                                                           $" balance:{list[i].balance}, AccountType: {list[i].type}, onDate:{list[i].date} " +  Environment.NewLine);
+                             return true;
+                         }
+                         if (confirm.ToLower() == "no")
+                         {
+                             return false;
+                         }
+                     }
+                     i += 1;
+                 }
+                 return false;*/
             }
             catch(Exception e)
             {
