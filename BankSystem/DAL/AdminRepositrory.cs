@@ -56,37 +56,25 @@ namespace BankSystem
                 }
                 using (var db = new BankdbContext())
                 {
+                    //Add a customer
                     db.Customers.Add(customer);
                     db.SaveChanges();
 
+                    //add an account
                     var a= db.BankAccounts.Add(account);
                     db.SaveChanges();
-                    balance.Account_id = a.Entity.BankAccount_id;
 
+                    //add a balance
+                    balance.Account_id = a.Entity.BankAccount_id;
                     db.Balances.Add(balance);
                     db.SaveChanges();
                     
                 }
-                /*
-                Guid g = Guid.NewGuid();
-                string path = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\memory.json";
                 string auditFilePath = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\AuditFile.txt";
-                string previousData= File.ReadAllText(path);
-                var list = JsonConvert.DeserializeObject<List<Account>>(previousData);
-                Account account = new Account(identitynumber,email,name,age,balance,type,DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"),g,true,phone);
-                foreach (Account acc in list)
-                {
-                    if (Convert.ToInt32(acc.identitynumber)==Convert.ToInt32(account.identitynumber))
-                    {
-                        return new Guid();
-                    }
-                }
-                list.Add(account);
-                File.WriteAllText(path, JsonConvert.SerializeObject(list));
-                File.AppendAllText(auditFilePath,$"Create new account with identityNumber: {account.identitynumber} ," +
-                                                $" email: {account.name}, name: {account.name}," +
-                                                $" age: {account.age}, balance: {account.balance}," +
-                                                $" AccountType: {account.type}, onDate: {account.date}"+ Environment.NewLine);*/
+                File.AppendAllText(auditFilePath, $"Create new account with identityNumber: {customer.Customer_identity} ," +
+                                                $" email: {customer.Customer_email}, name: {customer.Customer_name}," +
+                                                $" age: {customer.Customer_age}, balance: {balance.balance}," +
+                                                $" AccountType: {account.Account_type}, onDate: {account.Account_Date}" + Environment.NewLine);
                 Guid newGuid = Guid.Parse(customer.Customer_id);
                 return newGuid;
 
@@ -138,30 +126,12 @@ namespace BankSystem
                         updated.acc.Account_Date = account.Account_Date;
                         Db.SaveChanges();
                     }
+                    string auditFilePath = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\AuditFile.txt";
+                    File.AppendAllText(auditFilePath, $"Update the account that has identitynumber: {customer.Customer_identity}," +
+                                                               $"email: {customer.Customer_email}, name: {customer.Customer_name}, age:{customer.Customer_age}," +
+                                                               $" AccountType: {account.Account_type}, onDate:{account.Account_Date}" + Environment.NewLine);
                     return true;
                 }
-                /*
-                int i = 0;
-                string path = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\memory.json";
-                string auditFilePath = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\AuditFile.txt";
-                string previousData = File.ReadAllText(path);
-                var list = JsonConvert.DeserializeObject<List<Account>>(previousData);
-                foreach (Account acc in list)
-                {
-                    if (acc.identitynumber==identity_num)
-                    {
-                        Console.WriteLine(acc.identitynumber);
-                        Console.WriteLine(identity_num);
-                        Account newAccount = new Account(identity_num,email,name,age,balance,type,DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"),acc.id,true,phone);
-                        list[i] = newAccount;
-                        File.WriteAllText(path, JsonConvert.SerializeObject(list));
-                        File.AppendAllText(auditFilePath, $"Update the account that has identitynumber: {newAccount.identitynumber}," +
-                                                            $"email: {newAccount.email}, name: {newAccount.name}, age:{newAccount.age}," +
-                                                            $" balance:{newAccount.balance}, AccountType: {newAccount.type}, onDate:{newAccount.date}" + Environment.NewLine);
-                        return true;
-                    }
-                    i += 1;
-                }*/
             }
             catch(Exception e)
             {
@@ -190,42 +160,18 @@ namespace BankSystem
                     {
                         result.cust.Customer_status = false;
                         result.acc.Account_Status = false;
-                         Db.SaveChanges();
-                         return true;
+                        Db.SaveChanges();
+                        string auditFilePath = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\AuditFile.txt";
+                        File.AppendAllText(auditFilePath,   $"Inactive the account that has identitynumber: {result.cust.Customer_identity}," +
+                                                            $"email: {result.cust.Customer_email}, name: {result.cust.Customer_name}, age:{result.cust.Customer_age}," +
+                                                            $"AccountType: {result.acc.Account_type}, onDate:{result.acc.Account_Date} " + Environment.NewLine);
+                        return true;
                     }
                     else
                     {
                         return false;
                     }
                 }
-                /* int i = 0;
-                 string path = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\memory.json";
-                 string auditFilePath = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\AuditFile.txt";
-                 string prevData = File.ReadAllText(path);
-                 var list = JsonConvert.DeserializeObject<List<Account>>(prevData);
-                 foreach (Account acc in list)
-                 {
-                     if (acc.identitynumber==identity_num)
-                     {
-                         list[i].active = false;
-                         Console.WriteLine("Are you sure that you want to InActive this account?Yes/No");
-                         string confirm=Console.ReadLine();
-                         if (confirm.ToLower() == "yes")
-                         {
-                             File.WriteAllText(path, JsonConvert.SerializeObject(list));
-                             File.AppendAllText(auditFilePath, $"Inactive the account that has identitynumber: {list[i].identitynumber}," +
-                                                           $"email: {list[i].email}, name: {list[i].name}, age:{list[i].age}," +
-                                                           $" balance:{list[i].balance}, AccountType: {list[i].type}, onDate:{list[i].date} " +  Environment.NewLine);
-                             return true;
-                         }
-                         if (confirm.ToLower() == "no")
-                         {
-                             return false;
-                         }
-                     }
-                     i += 1;
-                 }
-                 return false;*/
             }
             catch(Exception e)
             {
