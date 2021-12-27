@@ -108,10 +108,39 @@ namespace BankSystem
          Input:IdentityNumber, email,name,age,balance,type
          output:if sucess returned true and if failed returned false
          */
-        public bool UpdateAccount(int identity_num,string email,string name,int age,double balance,string type,int phone)
+        public bool UpdateAccount(Customers customer,BankAccounts account)
         {
             try
             {
+                using (var Db = new BankdbContext())
+                {
+                    var result = from cust in Db.Customers
+                                 where cust.Customer_identity == customer.Customer_identity
+                                 select cust;
+                    if (result.Count() == 0)
+                    {
+                        return false;
+                    }
+                    else
+                    { 
+                        var updated = (from cust in Db.Customers
+                                        from acc in Db.BankAccounts
+                                        where cust.Customer_identity == customer.Customer_identity && acc.CustomersCustomer_id == cust.Customer_id
+                                        select new { cust, acc }).FirstOrDefault();
+                        //update customer
+                        updated.cust.Customer_email = customer.Customer_email;
+                        updated.cust.Customer_age = customer.Customer_age;
+                        updated.cust.Customer_name = customer.Customer_name;
+                        updated.cust.Customer_phone = customer.Customer_phone;
+
+                        //update account
+                        updated.acc.Account_type = account.Account_type;
+                        updated.acc.Account_Date = account.Account_Date;
+                        Db.SaveChanges();
+                    }
+                    return true;
+                }
+                /*
                 int i = 0;
                 string path = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\memory.json";
                 string auditFilePath = @"C:\Users\Habuarra\source\repos\BankSystem\BankSystem\AuditFile.txt";
@@ -132,8 +161,7 @@ namespace BankSystem
                         return true;
                     }
                     i += 1;
-                }
-                return false;
+                }*/
             }
             catch(Exception e)
             {

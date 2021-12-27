@@ -348,8 +348,11 @@ namespace BankSystem
                     }
                     //EndType
                     AdminRepositrory bankrepo = AdminRepositrory.GetInstance();
+                    DateTime localDate = DateTime.Now;
                     int identity_number = Convert.ToInt32(iden_num);
-                    if (bankrepo.UpdateAccount(identity_number, _Email, _Name, _Age, _Balance, _Type,_phone)==true)
+                    Customers customer = new Customers { Customer_identity= identity_number, Customer_email=_Email,Customer_age=_Age,Customer_name=_Name,Customer_phone=_phone,Customer_status=true};
+                    BankAccounts bankaccount = new BankAccounts { Account_type=_Type,Account_Status=true,Account_Date=localDate.ToString()};
+                    if (bankrepo.UpdateAccount(customer,bankaccount))
                     {
                         Console.WriteLine("The Account Updated Succesfully");
                     }
