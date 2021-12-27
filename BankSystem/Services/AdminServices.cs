@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-
+using BankSystem.common;
 namespace BankSystem
 {
     public class AdminServices : iAdminServices
@@ -176,8 +176,14 @@ namespace BankSystem
                 //EndType
 
 
-                AdminRepositrory bankrepo = AdminRepositrory.GetInstance();
-                Guid result = bankrepo.CreateAccount(_identitynumber, _Email, _Name, _Age, _Balance, _Type,_phone);
+            AdminRepositrory bankrepo = AdminRepositrory.GetInstance();
+            string guid = Guid.NewGuid().ToString();
+            DateTime localDate = DateTime.Now;
+            Customers customer = new Customers { Customer_identity=_identitynumber,Customer_email=_Email,Customer_name=_Name,Customer_age=_Age,Customer_phone=_phone,Customer_status=true, Customer_id=guid};
+            BankAccounts account = new BankAccounts {CustomersCustomer_id=guid, Account_type=_Type,Account_Date=localDate.ToString(),Account_Status=true};
+            Balances bbalance = new Balances {balance=_Balance };
+            //Guid result = bankrepo.CreateAccount(_identitynumber, _Email, _Name, _Age, _Balance, _Type,_phone);
+            Guid result = bankrepo.CreateAccount(customer,account, bbalance);
             if (result==new Guid())
             {
                 Console.WriteLine("There is an account of this identity number");
@@ -186,9 +192,7 @@ namespace BankSystem
             {
                 Console.Write(Convert.ToString(result));
             }
-            
-                
-                    
+               
         }
         #endregion
 
@@ -365,7 +369,7 @@ namespace BankSystem
         #endregion
 
         #region Delete Account Method
-        public async void DeleteAccount()
+        public void DeleteAccount()
         {
             Console.WriteLine("Please Enter the identity number for the account that you want to delete:");
             var iden_num = Console.ReadLine();
@@ -376,7 +380,7 @@ namespace BankSystem
                 if (valid_iden_num == true)
                 {
                     AdminRepositrory bankrepo = AdminRepositrory.GetInstance();
-                    if (await bankrepo.DeleteAccount(Convert.ToInt32(iden_num))==true)
+                    if (bankrepo.DeleteAccount(Convert.ToInt32(iden_num))==true)
                     {
                         Console.WriteLine("Account set to Inactive succsfully");
                     }

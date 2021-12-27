@@ -8,8 +8,7 @@ using System.Text.Json;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
-
+using BankSystem.common;
 namespace BankSystem
 {
     public class AdminRepositrory : iAdminRepository
@@ -28,7 +27,7 @@ namespace BankSystem
             return bankrepo;
         }
         #region GetAllBankAccounts Method
-        public List<BankSystem.common.Customers> Getdata()
+        public List<Customers> Getdata()
         {
             using (var db = new BankSystem.common.BankdbContext())
             {
@@ -43,57 +42,30 @@ namespace BankSystem
          Input:IdentityNumber, email,name,age,balance,type
          output:if sucess returned true,the unique key for the newly created account and if failed returned false
          */
-        public Guid CreateAccount(int identitynumber,string email,string name,int age,double balance,string type,int phone)
+        public Guid CreateAccount(Customers customer,BankAccounts account,Balances balance)
         {                 
             try
             {
-                Guid g = Guid.NewGuid();
                 var result = Getdata();
-                foreach (BankSystem.common.Customers customer in result)
+                foreach (Customers ccustomer in result)
                 {
-                    if (customer.Customer_identity==identitynumber)
+                    if (ccustomer.Customer_identity == customer.Customer_identity)
                     {
                         return new Guid();
                     }
                 }
-                //Create Customer object
-                BankSystem.common.Customers Customer = new BankSystem.common.Customers();
-                Customer.Customer_id =g.ToString();
-                Customer.Customer_identity = identitynumber;
-                Customer.Customer_email = email;
-                Customer.Customer_age = age;
-                Customer.Customer_name = name;
-                Customer.Customer_phone = phone;
-                Customer.Customer_status = true;
-                //end of create Customer object
-                using (var db = new BankSystem.common.BankdbContext())
+                using (var db = new BankdbContext())
                 {
-                    db.Customers.Add(Customer);
+                    db.Customers.Add(customer);
                     db.SaveChanges();
-                }
 
-                //Create BankAccount object
-                DateTime localDate = DateTime.Now;
-                BankSystem.common.BankAccounts Account = new BankSystem.common.BankAccounts();
-                Account.CustomersCustomer_id = Customer.Customer_id;
-                Account.Account_type = type;
-                Account.Account_Status = true;
-                Account.Account_Date = localDate.ToString();
-                //End of Create BankAccount object
-                
-                using (var db = new BankSystem.common.BankdbContext())
-                {
-                    var a= db.BankAccounts.Add(Account);
+                    var a= db.BankAccounts.Add(account);
                     db.SaveChanges();
-                    BankSystem.common.Balances Balance = new BankSystem.common.Balances();
-                    Balance.Account_id = a.Entity.BankAccount_id;
-                    Balance.balance = balance;
-                    using (var Db = new BankSystem.common.BankdbContext())
-                    {
-                        Db.Balances.Add(Balance);
-                        Db.SaveChanges();
-                    }
+                    balance.Account_id = a.Entity.BankAccount_id;
 
+                    db.Balances.Add(balance);
+                    db.SaveChanges();
+                    
                 }
                 /*
                 Guid g = Guid.NewGuid();
@@ -115,7 +87,8 @@ namespace BankSystem
                                                 $" email: {account.name}, name: {account.name}," +
                                                 $" age: {account.age}, balance: {account.balance}," +
                                                 $" AccountType: {account.type}, onDate: {account.date}"+ Environment.NewLine);*/
-                return g;
+                Guid newGuid = Guid.Parse(customer.Customer_id);
+                return newGuid;
 
             }
             catch (Exception e)
@@ -175,22 +148,22 @@ namespace BankSystem
          Input:IdentityNumber
          output:if sucess returned true and if failed returned false
          */
-        public async Task<bool> DeleteAccount(int identity_num)
+        public bool DeleteAccount(int identity_num)
         {
             try
             {
-                using (var Db = new BankSystem.common.BankdbContext())
+                using (var Db = new BankdbContext())
                 {
-                    var query=(from cust in Db.Customers
+                    var result=(from cust in Db.Customers
                                from acc in Db.BankAccounts
                                where cust.Customer_identity==identity_num && acc.CustomersCustomer_id==cust.Customer_id
                                select new { cust , acc}).FirstOrDefault();
-                    if (query != null)
+                    if (result != null)
                     {
-                        query.cust.Customer_status = false;
-                        query.acc.Account_Status = false;
-                        await Db.SaveChangesAsync();
-                        return true;
+                        result.cust.Customer_status = false;
+                        result.acc.Account_Status = false;
+                         Db.SaveChanges();
+                         return true;
                     }
                     else
                     {
