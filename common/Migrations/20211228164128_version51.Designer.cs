@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using common;
 
 namespace common
 {
     [DbContext(typeof(BankdbContext))]
-    partial class BankdbContextModelSnapshot : ModelSnapshot
+    [Migration("20211228164128_version51")]
+    partial class version51
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +55,10 @@ namespace common
                     b.Property<string>("Account_type")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("Customerscuid")
+                    b.Property<string>("CustomersCustomer_id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("Customerscuid")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("BankAccount_id");
@@ -73,6 +78,9 @@ namespace common
                         .HasColumnType("int");
 
                     b.Property<string>("Customer_email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Customer_id")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Customer_identity")
@@ -161,9 +169,7 @@ namespace common
                 {
                     b.HasOne("common.Customers", null)
                         .WithMany("BankAccounts")
-                        .HasForeignKey("Customerscuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Customerscuid");
                 });
 
             modelBuilder.Entity("common.Customers", b =>

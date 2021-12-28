@@ -64,15 +64,12 @@ namespace DAL
                 db.Balances.Add(balance);
                 db.SaveChanges();
 
-                Guid newGuid = Guid.Parse(customer.Customer_id);
-                return newGuid;
+                return customer.cuid;
 
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message.ToString());
-                Console.WriteLine(e.InnerException.ToString());
-
                 return new Guid();
                 
             }
@@ -100,7 +97,7 @@ namespace DAL
                 { 
                     var updated = (from cust in db.Customers
                                     from acc in db.BankAccounts
-                                    where cust.Customer_identity == customer.Customer_identity && acc.CustomersCustomer_id == cust.Customer_id
+                                    where cust.Customer_identity == customer.Customer_identity && acc.Customerscuid == cust.cuid
                                     select new { cust, acc }).FirstOrDefault();
                     //update customer
                     updated.cust.Customer_email = customer.Customer_email;
@@ -140,7 +137,7 @@ namespace DAL
             {
                 var result=(from cust in db.Customers
                             from acc in db.BankAccounts
-                            where cust.Customer_identity==identity_num && acc.CustomersCustomer_id==cust.Customer_id
+                            where cust.Customer_identity==identity_num && acc.Customerscuid==cust.cuid
                             select new { cust , acc}).FirstOrDefault();
                 if (result != null)
                 {

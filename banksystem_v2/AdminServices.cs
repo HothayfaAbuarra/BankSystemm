@@ -178,10 +178,10 @@ namespace banksystem_v2
 
 
             AdminRepositrory bankrepo = AdminRepositrory.GetInstance();
-            string guid = Guid.NewGuid().ToString();
+            Guid guid = Guid.NewGuid();
             DateTime localDate = DateTime.Now;
-            Customers customer = new Customers { Customer_identity=_identitynumber,Customer_email=_Email,Customer_name=_Name,Customer_age=_Age,Customer_phone=_phone,Customer_status=true, Customer_id=guid};
-            BankAccounts account = new BankAccounts {CustomersCustomer_id=guid, Account_type=_Type,Account_Date=localDate.ToString(),Account_Status=true};
+            Customers customer = new Customers { Customer_identity=_identitynumber,Customer_email=_Email,Customer_name=_Name,Customer_age=_Age,Customer_phone=_phone,Customer_status=true, cuid=guid};
+            BankAccounts account = new BankAccounts {Customerscuid=guid, Account_type=_Type,Account_Date=localDate.ToString(),Account_Status=true};
             Balances bbalance = new Balances {balance=_Balance };
             Guid result = bankrepo.CreateAccount(customer,account, bbalance);
             if (result==new Guid())
@@ -288,37 +288,6 @@ namespace banksystem_v2
                         }
                     }
                     //EndAge
-
-                    //Balance Field
-                    Console.WriteLine("Please Enter the balance");
-                    bool validBalance = false;
-                    while (validBalance == false)
-                    {
-                        var balance = Console.ReadLine();
-                        bool validone = Regex.IsMatch(balance, @"^\d+$");
-                        if (validone == true)
-                        {
-
-                            _Balance = Convert.ToDouble(balance);
-                            if (_Balance < 0)
-                            {
-                                validBalance = false;
-                                Console.WriteLine("The balance must be greater than 0:");
-                            }
-                            else
-                            {
-                                validBalance = true;
-                            }
-
-                        }
-                        else
-                        {
-                            Console.WriteLine("Please Enter a Valid number:");
-                        }
-
-                    }
-                    //EndBalance
-
                     //Type Field
                     Console.WriteLine("Please pick the type:");
                     Console.WriteLine("1-current bank account");

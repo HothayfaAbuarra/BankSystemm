@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using common;
 
 namespace common
 {
     [DbContext(typeof(BankdbContext))]
-    partial class BankdbContextModelSnapshot : ModelSnapshot
+    [Migration("20211228163922_version50")]
+    partial class version50
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,21 +55,20 @@ namespace common
                     b.Property<string>("Account_type")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("Customerscuid")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CustomersCustomer_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("BankAccount_id");
 
-                    b.HasIndex("Customerscuid");
+                    b.HasIndex("CustomersCustomer_id");
 
                     b.ToTable("BankAccounts");
                 });
 
             modelBuilder.Entity("common.Customers", b =>
                 {
-                    b.Property<Guid>("cuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Customer_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Customer_age")
                         .HasColumnType("int");
@@ -87,7 +88,10 @@ namespace common
                     b.Property<bool>("Customer_status")
                         .HasColumnType("bit");
 
-                    b.HasKey("cuid");
+                    b.Property<Guid>("cuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Customer_id");
 
                     b.ToTable("Customers");
                 });
@@ -161,9 +165,7 @@ namespace common
                 {
                     b.HasOne("common.Customers", null)
                         .WithMany("BankAccounts")
-                        .HasForeignKey("Customerscuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomersCustomer_id");
                 });
 
             modelBuilder.Entity("common.Customers", b =>

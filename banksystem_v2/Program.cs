@@ -10,7 +10,7 @@ namespace banksystem_v2
             bool Exit = false;
             while (Exit == false)
             {
-                Console.WriteLine("admin/teller/aa");
+                Console.WriteLine("admin/teller/press(a)for adminstrator");
                 string type = Console.ReadLine();
                 if (type.ToLower() == "exit")
                 {
@@ -24,7 +24,7 @@ namespace banksystem_v2
                     case "teller":
                         start.TellerMenu();
                         break;
-                    case "aa":
+                    case "a":
                         start.AdminstratorMenu();
                         break;
                 }

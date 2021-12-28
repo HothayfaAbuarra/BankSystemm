@@ -8,7 +8,7 @@ namespace common
     public class Customers
     {
         [Key]
-        public string Customer_id { get; set; }
+        public Guid cuid { get; set; }
         public string Customer_name { get; set; }
         public string Customer_email { get; set; }
         public int Customer_identity { get; set; }

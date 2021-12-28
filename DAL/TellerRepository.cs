@@ -32,7 +32,7 @@ namespace DAL
                 {
                     var Balance = (from bal in db.Balances
                                     where bal.Account_id == (from acc in db.BankAccounts
-                                                            where acc.CustomersCustomer_id == result.Customer_id
+                                                            where acc.Customerscuid == result.cuid
                                                             select acc).FirstOrDefault().BankAccount_id
                                     select bal).FirstOrDefault();
                     Balance.balance = Balance.balance + mony;
@@ -71,7 +71,7 @@ namespace DAL
                 {
                     var Balance = (from bal in db.Balances
                                     where bal.Account_id == (from acc in db.BankAccounts
-                                                            where acc.CustomersCustomer_id == result.Customer_id
+                                                            where acc.Customerscuid == result.cuid
                                                             select acc).FirstOrDefault().BankAccount_id
                                     select bal).FirstOrDefault();
                     Balance.balance = Balance.balance - mony;

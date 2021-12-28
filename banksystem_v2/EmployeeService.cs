@@ -175,7 +175,7 @@ namespace banksystem_v2
             }
             else
             {
-                Console.WriteLine("Insert account successfully");
+                Console.WriteLine("Insert account successfully"+result.ToString());
             }
         }
         #endregion
