@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankSystem", "BankSystem\BankSystem.csproj", "{FE4B1057-54BE-43D0-AA05-1AAD4550F6CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankSystem", "BankSystem\BankSystem.csproj", "{FE4B1057-54BE-43D0-AA05-1AAD4550F6CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{551AE68B-E7D5-4B1A-841B-FD38E5D37CDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "common", "common\common.csproj", "{B5DB553E-0C00-498A-8B62-ACADB8C61EB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "banksystem_v2", "banksystem_v2\banksystem_v2.csproj", "{D1B37205-3108-4253-A0FC-2D76F026A2E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{FE4B1057-54BE-43D0-AA05-1AAD4550F6CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE4B1057-54BE-43D0-AA05-1AAD4550F6CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE4B1057-54BE-43D0-AA05-1AAD4550F6CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{551AE68B-E7D5-4B1A-841B-FD38E5D37CDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{551AE68B-E7D5-4B1A-841B-FD38E5D37CDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{551AE68B-E7D5-4B1A-841B-FD38E5D37CDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{551AE68B-E7D5-4B1A-841B-FD38E5D37CDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5DB553E-0C00-498A-8B62-ACADB8C61EB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5DB553E-0C00-498A-8B62-ACADB8C61EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5DB553E-0C00-498A-8B62-ACADB8C61EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5DB553E-0C00-498A-8B62-ACADB8C61EB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1B37205-3108-4253-A0FC-2D76F026A2E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1B37205-3108-4253-A0FC-2D76F026A2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1B37205-3108-4253-A0FC-2D76F026A2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1B37205-3108-4253-A0FC-2D76F026A2E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
