@@ -50,12 +50,16 @@ namespace DAL
                         return new Guid();
                     }
                 }
-               
+                Guid gg = Guid.NewGuid();
                 //Add a customer
+                customer.cuid = gg;
+                customer.Customer_status = true;
                 db.Customers.Add(customer);
                 db.SaveChanges();
 
                 //add an account
+                account.Customerscuid = gg;
+                account.Account_Status = true;
                 var a= db.BankAccounts.Add(account);
                 db.SaveChanges();
 
@@ -77,12 +81,38 @@ namespace DAL
         }
         #endregion
 
+        #region Get Customer By identityNumber Method
+        public CustomerBankAccount GetCustomer(int identity)
+        {
+            try
+            {
+                var result = (from cust in db.Customers
+                             from acc in db.BankAccounts
+                             from bala in db.Balances
+                             where cust.Customer_identity== identity && acc.Customerscuid == cust.cuid && bala.Account_id==acc.BankAccount_id
+                             select new { cust, acc,bala }).FirstOrDefault();
+                if(result==null)
+                {
+                   return new CustomerBankAccount { account=null,customer=null};
+                }
+                else
+                {
+                    CustomerBankAccount customerr = new CustomerBankAccount { customer = result.cust, account = result.acc,balance=result.bala };
+                    return customerr;
+                }
+            }catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        #endregion
+
         #region Update Account Method
         /*
          Input:IdentityNumber, email,name,age,balance,type
          output:if sucess returned true and if failed returned false
          */
-        public bool UpdateAccount(Customers customer,BankAccounts account)
+        public bool UpdateAccount(Customers customer,BankAccounts account,Balances Balance)
         {
             try
             {
@@ -97,8 +127,9 @@ namespace DAL
                 { 
                     var updated = (from cust in db.Customers
                                     from acc in db.BankAccounts
-                                    where cust.Customer_identity == customer.Customer_identity && acc.Customerscuid == cust.cuid
-                                    select new { cust, acc }).FirstOrDefault();
+                                    from bala in db.Balances
+                                    where cust.Customer_identity == customer.Customer_identity && acc.Customerscuid == cust.cuid &&bala.Account_id==acc.BankAccount_id
+                                    select new { cust, acc,bala }).FirstOrDefault();
                     //update customer
                     updated.cust.Customer_email = customer.Customer_email;
                     updated.cust.Customer_age = customer.Customer_age;
@@ -108,6 +139,9 @@ namespace DAL
                     //update account
                     updated.acc.Account_type = account.Account_type;
                     updated.acc.Account_Date = account.Account_Date;
+
+                    //update balance
+                    updated.bala.balance = Balance.balance;
                     db.SaveChanges();
                 }
                 /*

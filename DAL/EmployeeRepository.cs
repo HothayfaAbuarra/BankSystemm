@@ -69,5 +69,13 @@ namespace DAL
             
         }
         #endregion
+
+        #region Method for test login
+        public bool Login(string username,string password)
+        {
+           
+            return true;
+        }
+        #endregion
     }
 }
